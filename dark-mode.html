@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dark Mode — Modern Web Starter Docs</title>
+  <meta name="description" content="Dark mode as a semantic token concern: the right approach, the anti-flash pattern, and OS preference detection.">
+  <script>(function(){var s=null;try{s=localStorage.getItem('theme-preference');}catch(e){}document.documentElement.setAttribute('data-theme',s||(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));})();</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/docs.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="docs-shell">
+
+  <aside class="docs-sidebar" aria-label="Documentation navigation">
+    <a href="index.html" class="docs-sidebar__logo">
+      <span class="docs-sidebar__logo-name">Modern Web Starter</span>
+      <span class="docs-sidebar__logo-tag">Docs</span>
+    </a>
+    <span class="docs-sidebar__section">Getting started</span>
+    <a href="index.html" class="docs-sidebar__link"><span class="docs-sidebar__link-icon">◈</span> Overview</a>
+    <a href="index.html#quick-start" class="docs-sidebar__link"><span class="docs-sidebar__link-icon">→</span> Quick start</a>
+    <a href="index.html#file-structure" class="docs-sidebar__link"><span class="docs-sidebar__link-icon">◻</span> File structure</a>
+    <span class="docs-sidebar__section">Core concepts</span>
+    <a href="layers.html" class="docs-sidebar__link"><span class="docs-sidebar__link-icon">⊞</span> Cascade Layers</a>
+    <a href="tokens.html" class="docs-sidebar__link"><span class="docs-sidebar__link-icon">◎</span> Design Tokens</a>
+    <a href="dark-mode.html" class="docs-sidebar__link"><span class="docs-sidebar__link-icon">◑</span> Dark Mode</a>
+    <a href="container-queries.html" class="docs-sidebar__link"><span class="docs-sidebar__link-icon">⊡</span> Container Queries</a>
+    <span class="docs-sidebar__section">Reference</span>
+    <a href="tokens.html#token-reference" class="docs-sidebar__link"><span class="docs-sidebar__link-icon">≡</span> Token reference</a>
+    <a href="layers.html#layer-reference" class="docs-sidebar__link"><span class="docs-sidebar__link-icon">≡</span> Layer reference</a>
+    <div class="docs-sidebar__spacer"></div>
+    <div class="docs-sidebar__footer">Built with the architecture it documents.</div>
+  </aside>
+
+  <header class="docs-topbar">
+    <div class="docs-topbar__breadcrumb">
+      <span>Starter</span>
+      <span class="docs-topbar__breadcrumb-sep">›</span>
+      <span>Core concepts</span>
+      <span class="docs-topbar__breadcrumb-sep">›</span>
+      <span class="docs-topbar__breadcrumb-current">Dark Mode</span>
+    </div>
+    <div class="docs-topbar__actions">
+      <a href="https://github.com/pdkaizer/modern-web-starter" class="btn btn--ghost btn--sm" rel="noopener">GitHub ↗</a>
+      <button class="theme-toggle" aria-label="Switch theme">
+        <svg class="theme-toggle__sun" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="1.5"/><path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.22 4.22l1.42 1.42M14.36 14.36l1.42 1.42M4.22 15.78l1.42-1.42M14.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <svg class="theme-toggle__moon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M17.5 11.5A7.5 7.5 0 0 1 8.5 2.5a7.5 7.5 0 1 0 9 9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="docs-content" id="main">
+    <div class="docs-two-col">
+
+      <article class="docs-article">
+
+        <div class="docs-page-header">
+          <p class="docs-page-label">Core concept 03</p>
+          <h1>Dark Mode Done Right</h1>
+          <p class="lead">Dark mode is a token concern, not a component concern. Centralise theme overrides in one place — every component updates automatically, including ones you haven't written yet.</p>
+        </div>
+
+        <div class="docs-section" id="the-wrong-way">
+          <h2>The wrong way</h2>
+          <p>The most common dark mode implementation scatters overrides across every component file. Each new component requires its own <code>[data-theme="dark"]</code> block. The theming concern is distributed everywhere.</p>
+
+          <div class="docs-compare">
+            <div class="docs-compare__panel">
+              <div class="docs-compare__head docs-compare__head--bad">✗ Dark mode in the component</div>
+              <div class="docs-compare__body"><span class="t-sel">.card</span> {
+  <span class="t-prop">background</span>: <span class="t-val">white</span>;
+  <span class="t-prop">color</span>: <span class="t-val">#0d0d0d</span>;
+  <span class="t-prop">border</span>: <span class="t-val">1px solid #e5e5e5</span>;
+}
+
+<span class="t-sel">[data-theme="dark"] .card</span> {
+  <span class="t-prop">background</span>: <span class="t-val">#1c1c1c</span>;
+  <span class="t-prop">color</span>: <span class="t-val">#f9f9f9</span>;
+  <span class="t-prop">border-color</span>: <span class="t-val">#2a2a2a</span>;
+}
+
+<span class="t-cmt">/* Every component needs the same... */</span>
+<span class="t-sel">[data-theme="dark"] .btn</span> { ... }
+<span class="t-sel">[data-theme="dark"] .input</span> { ... }</div>
+            </div>
+            <div class="docs-compare__panel">
+              <div class="docs-compare__head docs-compare__head--good">✓ Dark mode in the token layer</div>
+              <div class="docs-compare__body"><span class="t-at">@layer</span> <span class="t-sel">tokens</span> {
+  <span class="t-sel">[data-theme="dark"]</span> {
+    <span class="t-prop">--surface-raised</span>: <span class="t-val">var(--color-gray-900)</span>;
+    <span class="t-prop">--text-primary</span>:   <span class="t-val">var(--color-gray-50)</span>;
+    <span class="t-prop">--border-subtle</span>:  <span class="t-val">#2a2a2a</span>;
+  }
+}
+
+<span class="t-at">@layer</span> <span class="t-sel">components</span> {
+  <span class="t-sel">.card</span> {
+    <span class="t-prop">background</span>: <span class="t-val">var(--surface-raised)</span>;
+    <span class="t-prop">color</span>:       <span class="t-val">var(--text-primary)</span>;
+    <span class="t-prop">border</span>:      <span class="t-val">1px solid var(--border-subtle)</span>;
+    <span class="t-cmt">/* No dark mode override needed */</span>
+  }
+}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="docs-section" id="how-it-works">
+          <h2>How it works</h2>
+          <p>The entire dark mode implementation lives in <code>css/tokens.css</code>, inside <code>@layer tokens</code>. When the <code>data-theme="dark"</code> attribute is set on <code>&lt;html&gt;</code>, the semantic token values change. Every component that references those tokens updates automatically.</p>
+
+          <div class="docs-code">
+            <div class="docs-code__label">css/tokens.css (simplified)</div>
+            <pre><span class="t-at">@layer</span> <span class="t-sel">tokens</span> {
+
+  <span class="t-cmt">/* Tier 2 — Light (default) */</span>
+  <span class="t-sel">:root</span>, <span class="t-sel">[data-theme="light"]</span> {
+    <span class="t-prop">--surface-page</span>:   <span class="t-val">var(--color-gray-50)</span>;
+    <span class="t-prop">--surface-raised</span>: <span class="t-val">var(--color-white)</span>;
+    <span class="t-prop">--text-primary</span>:   <span class="t-val">var(--color-gray-950)</span>;
+    <span class="t-prop">--accent-default</span>: <span class="t-val">var(--color-amber-500)</span>;
+  }
+
+  <span class="t-cmt">/* Tier 2 — Dark overrides */</span>
+  <span class="t-sel">[data-theme="dark"]</span> {
+    <span class="t-prop">--surface-page</span>:   <span class="t-val">var(--color-black)</span>;
+    <span class="t-prop">--surface-raised</span>: <span class="t-val">var(--color-gray-900)</span>;
+    <span class="t-prop">--text-primary</span>:   <span class="t-val">var(--color-gray-50)</span>;
+    <span class="t-prop">--accent-default</span>: <span class="t-val">var(--color-amber-400)</span>;
+  }
+
+  <span class="t-cmt">/* OS preference as fallback — only when no manual override is set */</span>
+  <span class="t-at">@media</span> (<span class="t-prop">prefers-color-scheme</span>: <span class="t-val">dark</span>) {
+    <span class="t-sel">:root:not([data-theme="light"])</span> {
+      <span class="t-prop">--surface-page</span>:   <span class="t-val">var(--color-black)</span>;
+      <span class="t-prop">--surface-raised</span>: <span class="t-val">var(--color-gray-900)</span>;
+      <span class="t-prop">--text-primary</span>:   <span class="t-val">var(--color-gray-50)</span>;
+    }
+  }
+}</pre>
+          </div>
+
+          <div class="docs-note docs-note--accent">
+            <p class="docs-note__title">Components are mode-agnostic by default</p>
+            <p>Because components only reference semantic tokens, every new component you write automatically supports both light and dark mode. There is no dark mode work required at the component level — ever.</p>
+          </div>
+        </div>
+
+        <div class="docs-section" id="anti-flash">
+          <h2>Preventing flash of wrong theme</h2>
+          <p>If the theme is applied via JavaScript after the page renders, users see a brief flash of the wrong theme. The fix is a small inline script in <code>&lt;head&gt;</code> that runs synchronously before any content renders.</p>
+
+          <div class="docs-note docs-note--warn">
+            <p class="docs-note__title">This script must be inline</p>
+            <p>An external script file would introduce a round-trip request and still flash. The script must be inline in <code>&lt;head&gt;</code>, and it must run before the stylesheet is applied. Do not move it, defer it, or make it async.</p>
+          </div>
+
+          <div class="docs-code">
+            <div class="docs-code__label">Every HTML page — in &lt;head&gt;, before the stylesheet</div>
+            <pre><span class="t-cmt">&lt;!-- Anti-flash: sets data-theme before paint --&gt;</span>
+&lt;<span class="t-at">script</span>&gt;
+  (function () {
+    var stored = null;
+    try { stored = localStorage.getItem(<span class="t-str">'theme-preference'</span>); } catch (e) {}
+    var theme = stored
+      || (window.matchMedia(<span class="t-str">'(prefers-color-scheme: dark)'</span>).matches
+          ? <span class="t-str">'dark'</span> : <span class="t-str">'light'</span>);
+    document.documentElement.setAttribute(<span class="t-str">'data-theme'</span>, theme);
+  })();
+&lt;/<span class="t-at">script</span>&gt;</pre>
+          </div>
+
+          <h3>Priority logic</h3>
+          <p>The script resolves the active theme in this order:</p>
+          <ol class="docs-list">
+            <li>Check <code>localStorage</code> for an explicit user preference</li>
+            <li>Fall back to <code>prefers-color-scheme</code> (OS setting)</li>
+            <li>Default to <code>light</code> if neither is available</li>
+          </ol>
+        </div>
+
+        <div class="docs-section" id="the-toggle">
+          <h2>The toggle</h2>
+          <p>The theme toggle button is included in the nav on every page. The JavaScript in <code>js/main.js</code> handles reading and writing the preference.</p>
+
+          <div class="docs-code">
+            <div class="docs-code__label">js/main.js — Theme module (simplified)</div>
+            <pre><span class="t-cmt">// Toggle between dark and light, persist to localStorage</span>
+function toggle() {
+  const current = html.getAttribute(<span class="t-str">'data-theme'</span>);
+  const next = current === <span class="t-str">'dark'</span> ? <span class="t-str">'light'</span> : <span class="t-str">'dark'</span>;
+  html.setAttribute(<span class="t-str">'data-theme'</span>, next);
+  localStorage.setItem(<span class="t-str">'theme-preference'</span>, next);
+}</pre>
+          </div>
+
+          <div class="docs-demo">
+            <p class="docs-demo__label">This page is the demo — toggle the theme in the top-right corner</p>
+            <p style="font-size:var(--size-xs);color:var(--text-secondary);margin:0">Every surface, border, and text colour on this page responds to the toggle. The component CSS has not changed — only the semantic token values swap in <code>tokens.css</code>.</p>
+          </div>
+        </div>
+
+        <div class="docs-section" id="rules">
+          <h2>Rules to follow</h2>
+
+          <div class="docs-token-table">
+            <table>
+              <thead><tr><th>Rule</th><th>Why</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td>Never use hardcoded colours in components</td>
+                  <td>They won't respond to theme changes</td>
+                </tr>
+                <tr>
+                  <td>Never add dark mode overrides in component files</td>
+                  <td>Dark mode lives in <code>tokens.css</code> only</td>
+                </tr>
+                <tr>
+                  <td>Always reference semantic tokens, not primitives</td>
+                  <td>Primitives don't change between themes</td>
+                </tr>
+                <tr>
+                  <td>Keep the anti-flash script inline in <code>&lt;head&gt;</code></td>
+                  <td>External scripts cause flash</td>
+                </tr>
+                <tr>
+                  <td>Use <code>:root:not([data-theme="light"])</code> for OS media query</td>
+                  <td>Prevents media query from overriding explicit user choice</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="docs-pagination">
+          <a href="tokens.html" class="docs-pagination__link">
+            <span class="docs-pagination__dir">← Previous</span>
+            <span class="docs-pagination__title">Design Tokens</span>
+          </a>
+          <a href="container-queries.html" class="docs-pagination__link docs-pagination__link--next">
+            <span class="docs-pagination__dir">Next →</span>
+            <span class="docs-pagination__title">Container Queries</span>
+          </a>
+        </div>
+
+      </article>
+
+      <nav class="docs-on-this-page" aria-label="On this page">
+        <p class="docs-on-this-page__title">On this page</p>
+        <a href="#the-wrong-way" class="docs-on-this-page__link">The wrong way</a>
+        <a href="#how-it-works"  class="docs-on-this-page__link">How it works</a>
+        <a href="#anti-flash"    class="docs-on-this-page__link">Preventing flash</a>
+        <a href="#the-toggle"    class="docs-on-this-page__link">The toggle</a>
+        <a href="#rules"         class="docs-on-this-page__link">Rules to follow</a>
+      </nav>
+
+    </div>
+  </main>
+
+</div>
+
+<script type="module" src="js/docs.js"></script>
+</body>
+</html>

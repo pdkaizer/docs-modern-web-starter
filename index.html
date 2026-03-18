@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern Web Starter — Documentation</title>
+  <meta name="description" content="Comprehensive docs for the Modern Web Starter: CSS Cascade Layers, design tokens, dark mode, and container queries.">
+  <script>(function(){var s=null;try{s=localStorage.getItem('theme-preference');}catch(e){}document.documentElement.setAttribute('data-theme',s||(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));})();</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/docs.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="docs-shell">
+
+  <!-- ── Sidebar ─────────────────────────────────────────── -->
+  <aside class="docs-sidebar" aria-label="Documentation navigation">
+    <a href="index.html" class="docs-sidebar__logo">
+      <span class="docs-sidebar__logo-name">Modern Web Starter</span>
+      <span class="docs-sidebar__logo-tag">Docs</span>
+    </a>
+
+    <span class="docs-sidebar__section">Getting started</span>
+    <a href="index.html" class="docs-sidebar__link">
+      <span class="docs-sidebar__link-icon">◈</span> Overview
+    </a>
+    <a href="index.html#quick-start" class="docs-sidebar__link">
+      <span class="docs-sidebar__link-icon">→</span> Quick start
+    </a>
+    <a href="index.html#file-structure" class="docs-sidebar__link">
+      <span class="docs-sidebar__link-icon">◻</span> File structure
+    </a>
+
+    <span class="docs-sidebar__section">Core concepts</span>
+    <a href="layers.html" class="docs-sidebar__link">
+      <span class="docs-sidebar__link-icon">⊞</span> Cascade Layers
+    </a>
+    <a href="tokens.html" class="docs-sidebar__link">
+      <span class="docs-sidebar__link-icon">◎</span> Design Tokens
+    </a>
+    <a href="dark-mode.html" class="docs-sidebar__link">
+      <span class="docs-sidebar__link-icon">◑</span> Dark Mode
+    </a>
+    <a href="container-queries.html" class="docs-sidebar__link">
+      <span class="docs-sidebar__link-icon">⊡</span> Container Queries
+    </a>
+
+    <span class="docs-sidebar__section">Reference</span>
+    <a href="tokens.html#token-reference" class="docs-sidebar__link">
+      <span class="docs-sidebar__link-icon">≡</span> Token reference
+    </a>
+    <a href="layers.html#layer-reference" class="docs-sidebar__link">
+      <span class="docs-sidebar__link-icon">≡</span> Layer reference
+    </a>
+
+    <div class="docs-sidebar__spacer"></div>
+
+    <div class="docs-sidebar__footer">
+      Built with the architecture it documents.
+    </div>
+  </aside>
+
+  <!-- ── Topbar ──────────────────────────────────────────── -->
+  <header class="docs-topbar">
+    <div class="docs-topbar__breadcrumb">
+      <span>Starter</span>
+      <span class="docs-topbar__breadcrumb-sep">›</span>
+      <span class="docs-topbar__breadcrumb-current">Overview</span>
+    </div>
+    <div class="docs-topbar__actions">
+      <a href="https://github.com/pdkaizer/modern-web-starter" class="btn btn--ghost btn--sm" rel="noopener">GitHub ↗</a>
+      <button class="theme-toggle" aria-label="Switch theme">
+        <svg class="theme-toggle__sun" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="1.5"/><path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.22 4.22l1.42 1.42M14.36 14.36l1.42 1.42M4.22 15.78l1.42-1.42M14.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <svg class="theme-toggle__moon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M17.5 11.5A7.5 7.5 0 0 1 8.5 2.5a7.5 7.5 0 1 0 9 9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ── Content ─────────────────────────────────────────── -->
+  <main class="docs-content" id="main">
+
+    <!-- Hero -->
+    <div class="docs-hero">
+      <div class="docs-hero__inner">
+        <span class="docs-hero__version">v1.0 — Modern Web Starter</span>
+        <h1>A lean foundation for<br><em>the modern web.</em></h1>
+        <p>Semantic HTML, CSS Cascade Layers, a three-tier design token system, dark mode without the complexity, and container queries. No framework. No build step required for development.</p>
+        <div class="docs-hero__actions">
+          <a href="layers.html" class="btn btn--primary btn--lg">Start with Layers →</a>
+          <a href="index.html#quick-start" class="btn btn--secondary btn--lg">Quick start</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="docs-article">
+
+      <!-- Concept overview -->
+      <div class="docs-section" id="concepts">
+        <h2>Four core ideas</h2>
+        <p>Each solves a distinct problem that has frustrated CSS developers for years. They compose — you can adopt any one independently, but together they form a coherent architecture.</p>
+
+        <div class="concept-grid">
+          <a href="layers.html" class="concept-card">
+            <div class="concept-card__num">01</div>
+            <div class="concept-card__title">Cascade Layers</div>
+            <p class="concept-card__desc">Declare priority order once. Layer order beats specificity between layers — no more <code>!important</code> arms races.</p>
+            <div class="concept-card__cta">Read the guide →</div>
+          </a>
+          <a href="tokens.html" class="concept-card">
+            <div class="concept-card__num">02</div>
+            <div class="concept-card__title">Design Tokens</div>
+            <p class="concept-card__desc">Primitives → semantic → component. A three-tier hierarchy that separates <em>what a value is</em> from <em>what it means</em>.</p>
+            <div class="concept-card__cta">Read the guide →</div>
+          </a>
+          <a href="dark-mode.html" class="concept-card">
+            <div class="concept-card__num">03</div>
+            <div class="concept-card__title">Dark Mode Done Right</div>
+            <p class="concept-card__desc">Dark mode is a token concern, not a component concern. Redefine semantic tokens in one place — every component updates automatically.</p>
+            <div class="concept-card__cta">Read the guide →</div>
+          </a>
+          <a href="container-queries.html" class="concept-card">
+            <div class="concept-card__num">04</div>
+            <div class="concept-card__title">Container Queries</div>
+            <p class="concept-card__desc">Respond to the container, not the viewport. The same component adapts to wherever it's placed — sidebar, grid, or full-width.</p>
+            <div class="concept-card__cta">Read the guide →</div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick start -->
+      <div class="docs-section" id="quick-start">
+        <h2>Quick start</h2>
+        <p>No build step required to get started. Open the HTML files directly in a browser, or use any local server.</p>
+
+        <div class="docs-code">
+          <div class="docs-code__label">Terminal</div>
+          <pre><span class="t-cmt"># Clone the repo</span>
+git clone https://github.com/your-handle/web-starter.git
+cd web-starter
+
+<span class="t-cmt"># Open directly — no install needed</span>
+open index.html
+
+<span class="t-cmt"># Or use a local server for better dev experience</span>
+npx serve .</pre>
+        </div>
+
+        <p>For production, add PostCSS to inline the CSS <code>@import</code> chain:</p>
+
+        <div class="docs-code">
+          <div class="docs-code__label">Terminal</div>
+          <pre>npm install -D vite postcss postcss-import postcss-nesting
+npx vite build</pre>
+        </div>
+      </div>
+
+      <!-- File structure -->
+      <div class="docs-section" id="file-structure">
+        <h2>File structure</h2>
+
+        <div class="docs-code">
+          <div class="docs-code__label">Project structure</div>
+          <pre><span class="t-cmt">/</span>
+├── <span class="t-val">index.html</span>                  <span class="t-cmt"># Home / component showcase</span>
+├── <span class="t-val">pages/</span>
+│   ├── landing.html            <span class="t-cmt"># Marketing landing page</span>
+│   ├── article.html            <span class="t-cmt"># Long-form prose + TOC</span>
+│   ├── sidebar.html            <span class="t-cmt"># Content listing + filter sidebar</span>
+│   └── full-width.html         <span class="t-cmt"># Dashboard / app shell</span>
+├── <span class="t-val">css/</span>
+│   ├── main.css                <span class="t-cmt"># Entry point — @layer order + @imports</span>
+│   ├── tokens.css              <span class="t-cmt"># All design tokens (T1 → T2 → T3)</span>
+│   ├── reset.css               <span class="t-cmt"># Browser normalisation</span>
+│   ├── base.css                <span class="t-cmt"># Element-level defaults</span>
+│   ├── components.css          <span class="t-cmt"># Reusable UI patterns</span>
+│   └── utilities.css           <span class="t-cmt"># Single-purpose helpers</span>
+└── <span class="t-val">js/</span>
+    └── main.js                 <span class="t-cmt"># Theme toggle, mobile nav, reveal</span></pre>
+        </div>
+
+        <div class="docs-note docs-note--accent">
+          <p class="docs-note__title">The entry point is <code>css/main.css</code></p>
+          <p>This file declares the <code>@layer</code> order and imports all partials. It's the only stylesheet you reference in HTML. Everything else flows from it.</p>
+        </div>
+      </div>
+
+      <!-- Browser support -->
+      <div class="docs-section" id="browser-support">
+        <h2>Browser support</h2>
+        <p>All features used in this starter have broad modern browser support.</p>
+
+        <div class="browser-support">
+          <div class="browser-badge"><span class="browser-badge__dot"></span>Chrome / Edge 99+</div>
+          <div class="browser-badge"><span class="browser-badge__dot"></span>Firefox 97+</div>
+          <div class="browser-badge"><span class="browser-badge__dot"></span>Safari 15.4+</div>
+        </div>
+
+        <div class="docs-token-table docs-mt-5">
+          <table>
+            <thead><tr><th>Feature</th><th>Chrome</th><th>Firefox</th><th>Safari</th><th>Baseline</th></tr></thead>
+            <tbody>
+              <tr><td>CSS Cascade Layers</td><td>99</td><td>97</td><td>15.4</td><td>March 2022</td></tr>
+              <tr><td>CSS Custom Properties</td><td>49</td><td>31</td><td>9.1</td><td>March 2016</td></tr>
+              <tr><td>Container Queries</td><td>105</td><td>110</td><td>16</td><td>February 2023</td></tr>
+              <tr><td><code>color-mix()</code></td><td>111</td><td>113</td><td>16.2</td><td>May 2023</td></tr>
+              <tr><td><code>clamp()</code></td><td>79</td><td>75</td><td>13.1</td><td>July 2020</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Next steps -->
+      <div class="docs-pagination">
+        <span></span>
+        <a href="layers.html" class="docs-pagination__link docs-pagination__link--next">
+          <span class="docs-pagination__dir">Next →</span>
+          <span class="docs-pagination__title">Cascade Layers</span>
+        </a>
+      </div>
+
+    </div><!-- /docs-article -->
+  </main>
+
+</div><!-- /docs-shell -->
+
+<script type="module" src="js/docs.js"></script>
+</body>
+</html>

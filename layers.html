@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cascade Layers — Modern Web Starter Docs</title>
+  <meta name="description" content="How CSS Cascade Layers work, the five-layer stack, and an interactive demo showing layer order beating specificity.">
+  <script>(function(){var s=null;try{s=localStorage.getItem('theme-preference');}catch(e){}document.documentElement.setAttribute('data-theme',s||(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));})();</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/docs.css">
+  <style>
+    /* Layer demo interactive card — inside @layer components already via docs.css */
+    .demo-card {
+      background: var(--surface-raised);
+      border: 2px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+
+    /* High-specificity rule — ID + class, lives here in an unlabelled block
+       to demonstrate the point: even without @layer this selector is strong */
+    #layer-demo-card.demo-card {
+      background: #dbeafe;
+      border-color: #3b82f6;
+    }
+
+    [data-theme="dark"] #layer-demo-card.demo-card {
+      background: rgb(59 130 246 / 0.15);
+      border-color: #60a5fa;
+    }
+
+    /* Applied by the demo button — in @layer utilities it would win,
+       but here we show it WITHOUT layers first, then explain the solution */
+    #layer-demo-card.demo-card.utility-wins {
+      background: var(--accent-subtle);
+      border-color: var(--accent-default);
+    }
+
+    .layer-demo-tag {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-default);
+      color: var(--text-tertiary);
+      opacity: 0.35;
+      transition: all 0.2s ease;
+    }
+
+    .layer-demo-tag.is-components {
+      opacity: 1;
+      border-color: #3b82f6;
+      color: #1d4ed8;
+      background: #dbeafe;
+    }
+
+    [data-theme="dark"] .layer-demo-tag.is-components {
+      color: #93c5fd;
+      background: rgb(59 130 246 / 0.1);
+      border-color: rgb(59 130 246 / 0.4);
+    }
+
+    .layer-demo-tag.is-utilities {
+      opacity: 1;
+      border-color: var(--accent-default);
+      color: var(--accent-text, var(--accent-default));
+      background: var(--accent-subtle);
+    }
+
+    .layer-result {
+      margin-top: var(--space-4);
+      padding: var(--space-4) var(--space-5);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+      background: var(--surface-sunken);
+      font-family: var(--font-mono);
+      font-size: var(--size-xs);
+      line-height: 1.7;
+      color: var(--text-secondary);
+      white-space: pre-line;
+      transition: all 0.25s ease;
+    }
+
+    .layer-result.is-win {
+      border-color: var(--accent-default);
+      background: var(--accent-subtle);
+      color: var(--text-primary);
+    }
+
+    .demo-btn-row {
+      display: flex;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+      align-items: center;
+      margin-top: var(--space-5);
+    }
+
+    .demo-action-btn {
+      padding: var(--space-2) var(--space-4);
+      border-radius: var(--radius-md);
+      font-family: var(--font-mono);
+      font-size: var(--size-xs);
+      font-weight: 500;
+      border: 1px solid var(--border-default);
+      color: var(--text-secondary);
+      background: var(--surface-raised);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .demo-action-btn:hover { border-color: var(--accent-default); color: var(--text-primary); }
+    .demo-action-btn.is-active {
+      border-color: var(--accent-default);
+      color: var(--accent-text, var(--accent-default));
+      background: var(--accent-subtle);
+    }
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="docs-shell">
+
+  <!-- Sidebar -->
+  <aside class="docs-sidebar" aria-label="Documentation navigation">
+    <a href="index.html" class="docs-sidebar__logo">
+      <span class="docs-sidebar__logo-name">Modern Web Starter</span>
+      <span class="docs-sidebar__logo-tag">Docs</span>
+    </a>
+    <span class="docs-sidebar__section">Getting started</span>
+    <a href="index.html" class="docs-sidebar__link"><span class="docs-sidebar__link-icon">◈</span> Overview</a>
+    <a href="index.html#quick-start" class="docs-sidebar__link"><span class="docs-sidebar__link-icon">→</span> Quick start</a>
+    <a href="index.html#file-structure" class="docs-sidebar__link"><span class="docs-sidebar__link-icon">◻</span> File structure</a>
+    <span class="docs-sidebar__section">Core concepts</span>
+    <a href="layers.html" class="docs-sidebar__link"><span class="docs-sidebar__link-icon">⊞</span> Cascade Layers</a>
+    <a href="tokens.html" class="docs-sidebar__link"><span class="docs-sidebar__link-icon">◎</span> Design Tokens</a>
+    <a href="dark-mode.html" class="docs-sidebar__link"><span class="docs-sidebar__link-icon">◑</span> Dark Mode</a>
+    <a href="container-queries.html" class="docs-sidebar__link"><span class="docs-sidebar__link-icon">⊡</span> Container Queries</a>
+    <span class="docs-sidebar__section">Reference</span>
+    <a href="tokens.html#token-reference" class="docs-sidebar__link"><span class="docs-sidebar__link-icon">≡</span> Token reference</a>
+    <a href="layers.html#layer-reference" class="docs-sidebar__link"><span class="docs-sidebar__link-icon">≡</span> Layer reference</a>
+    <div class="docs-sidebar__spacer"></div>
+    <div class="docs-sidebar__footer">Built with the architecture it documents.</div>
+  </aside>
+
+  <!-- Topbar -->
+  <header class="docs-topbar">
+    <div class="docs-topbar__breadcrumb">
+      <span>Starter</span>
+      <span class="docs-topbar__breadcrumb-sep">›</span>
+      <span>Core concepts</span>
+      <span class="docs-topbar__breadcrumb-sep">›</span>
+      <span class="docs-topbar__breadcrumb-current">Cascade Layers</span>
+    </div>
+    <div class="docs-topbar__actions">
+      <a href="https://github.com/pdkaizer/modern-web-starter" class="btn btn--ghost btn--sm" rel="noopener">GitHub ↗</a>
+      <button class="theme-toggle" aria-label="Switch theme">
+        <svg class="theme-toggle__sun" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="1.5"/><path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.22 4.22l1.42 1.42M14.36 14.36l1.42 1.42M4.22 15.78l1.42-1.42M14.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <svg class="theme-toggle__moon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M17.5 11.5A7.5 7.5 0 0 1 8.5 2.5a7.5 7.5 0 1 0 9 9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <main class="docs-content" id="main">
+    <div class="docs-two-col">
+
+      <!-- Article -->
+      <article class="docs-article">
+
+        <div class="docs-page-header">
+          <p class="docs-page-label">Core concept 01</p>
+          <h1>Cascade Layers</h1>
+          <p class="lead">Declare priority order once. Layer order beats specificity between layers — forever eliminating <code>!important</code> wars and load-order fragility.</p>
+        </div>
+
+        <!-- The problem -->
+        <div class="docs-section" id="the-problem">
+          <h2>The problem</h2>
+          <p>CSS specificity is a good rule within a single codebase. But when utilities, components, resets, and third-party styles all compete, the system breaks down. The only escape was increasing specificity or reaching for <code>!important</code> — both of which make the problem worse.</p>
+
+          <div class="docs-compare">
+            <div class="docs-compare__panel">
+              <div class="docs-compare__head docs-compare__head--bad">✗ Without layers</div>
+              <div class="docs-compare__body"><span class="t-cmt">/* Specificity: 0,1,0 */</span>
+<span class="t-sel">.card</span> { <span class="t-prop">background</span>: <span class="t-val">white</span>; }
+
+<span class="t-cmt">/* Need to override? More specificity. */</span>
+<span class="t-sel">.page .card</span> { <span class="t-prop">background</span>: <span class="t-val">ivory</span>; }
+
+<span class="t-cmt">/* That broke something... */</span>
+<span class="t-sel">#app .page .card</span> { <span class="t-prop">background</span>: <span class="t-val">ivory</span>; }
+
+<span class="t-cmt">/* Fine. */</span>
+<span class="t-sel">.card</span> { <span class="t-prop">background</span>: <span class="t-val">ivory !important</span>; }</div>
+            </div>
+            <div class="docs-compare__panel">
+              <div class="docs-compare__head docs-compare__head--good">✓ With layers</div>
+              <div class="docs-compare__body"><span class="t-at">@layer</span> components, utilities;
+
+<span class="t-at">@layer</span> <span class="t-sel">components</span> {
+  <span class="t-sel">.card</span> { <span class="t-prop">background</span>: <span class="t-val">white</span>; }
+}
+
+<span class="t-at">@layer</span> <span class="t-sel">utilities</span> {
+  <span class="t-cmt">/* Always wins — no !important */</span>
+  <span class="t-sel">.bg-ivory</span> { <span class="t-prop">background</span>: <span class="t-val">ivory</span>; }
+}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- How layers work -->
+        <div class="docs-section" id="how-layers-work">
+          <h2>How layers work</h2>
+          <p>The <code>@layer</code> at-rule creates named buckets in the cascade. Within a layer, specificity works exactly as normal. But between layers, the layer order declared at the top of your stylesheet is the authority — not specificity.</p>
+
+          <div class="docs-note docs-note--accent">
+            <p class="docs-note__title">The key insight</p>
+            <p>A class selector in <code>@layer utilities</code> will always beat an ID selector in <code>@layer components</code> — because <code>utilities</code> was declared after <code>components</code>. Layer order is the new specificity.</p>
+          </div>
+
+          <div class="docs-code">
+            <div class="docs-code__label">How it works</div>
+            <pre><span class="t-cmt">/* Declare layer order once — first declaration wins */</span>
+<span class="t-at">@layer</span> reset, tokens, base, components, utilities;
+
+<span class="t-cmt">/* Later layers always win, regardless of selector specificity */</span>
+<span class="t-at">@layer</span> <span class="t-sel">components</span> {
+  <span class="t-sel">#high-specificity.card</span> { <span class="t-prop">color</span>: <span class="t-val">red</span>; }  <span class="t-cmt">/* specificity 1,1,0 */</span>
+}
+
+<span class="t-at">@layer</span> <span class="t-sel">utilities</span> {
+  <span class="t-sel">.text-blue</span> { <span class="t-prop">color</span>: <span class="t-val">blue</span>; }  <span class="t-cmt">/* specificity 0,1,0 — but wins */</span>
+}</pre>
+          </div>
+        </div>
+
+        <!-- Interactive demo -->
+        <div class="docs-section" id="interactive-demo">
+          <h2>Try it</h2>
+          <p>The card below has a blue background from a high-specificity <code>#id.class</code> rule inside the unlayered stylesheet. Click the button to add <code>.utility-wins</code> — a lower-specificity class that overrides it because of layer order.</p>
+
+          <div class="docs-demo">
+            <p class="docs-demo__label">Interactive demo</p>
+
+            <div id="layer-demo-card" class="demo-card">
+              <p class="docs-demo-eyebrow">Demo card</p>
+              <h3 class="cq-card__title" style="margin-bottom:var(--space-3)">Styled by <code>#layer-demo-card.demo-card</code></h3>
+              <p class="card__body">Specificity <strong>1,1,0</strong>. In normal CSS this would be nearly unbeatable. Try adding the utility class.</p>
+              <div class="flex gap-3 flex-wrap mt-4">
+                <span id="layer-tag-components" class="layer-demo-tag is-components">component rule — active</span>
+                <span id="layer-tag-utilities"  class="layer-demo-tag">utility class — not applied</span>
+              </div>
+            </div>
+
+            <div class="demo-btn-row">
+              <button class="demo-action-btn" id="layer-btn-add">Add .utility-wins</button>
+              <button class="demo-action-btn" id="layer-btn-remove">Remove it</button>
+            </div>
+
+            <div class="layer-result" id="layer-result">Click "Add .utility-wins" to run the demo.</div>
+          </div>
+        </div>
+
+        <!-- The five-layer stack -->
+        <div class="docs-section" id="the-stack">
+          <h2>The five-layer stack</h2>
+          <p>This starter declares five layers in <code>css/main.css</code>. The order is fixed — it never changes. Files can be added or imported in any order; the declaration controls everything.</p>
+
+          <div class="docs-code">
+            <div class="docs-code__label">css/main.css</div>
+            <pre><span class="t-at">@layer</span> reset, tokens, base, components, utilities;
+
+<span class="t-at">@import</span> <span class="t-str">"./reset.css"</span>;
+<span class="t-at">@import</span> <span class="t-str">"./tokens.css"</span>;
+<span class="t-at">@import</span> <span class="t-str">"./base.css"</span>;
+<span class="t-at">@import</span> <span class="t-str">"./components.css"</span>;
+<span class="t-at">@import</span> <span class="t-str">"./utilities.css"</span>;</pre>
+          </div>
+
+          <div class="layer-diagram">
+            <div class="layer-row">
+              <span class="layer-name">reset</span>
+              <span class="layer-desc">Browser normalisation — box-sizing, margin removal, baseline defaults</span>
+              <span class="layer-priority">lowest priority</span>
+            </div>
+            <div class="layer-row">
+              <span class="layer-name">tokens</span>
+              <span class="layer-desc">All CSS custom properties — primitives, semantic tokens, dark mode</span>
+              <span class="layer-priority">↑</span>
+            </div>
+            <div class="layer-row">
+              <span class="layer-name">base</span>
+              <span class="layer-desc">Element-level defaults — h1, p, a, input, table, details</span>
+              <span class="layer-priority">↑</span>
+            </div>
+            <div class="layer-row layer-row--hi">
+              <span class="layer-name">components</span>
+              <span class="layer-desc">.card, .btn, .site-nav — semantic, purpose-named UI patterns</span>
+              <span class="layer-priority">↑</span>
+            </div>
+            <div class="layer-row layer-row--hi">
+              <span class="layer-name">utilities</span>
+              <span class="layer-desc">.flex, .mt-8, .text-secondary — single-purpose escape valves</span>
+              <span class="layer-priority">highest priority</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rules -->
+        <div class="docs-section" id="rules">
+          <h2>Rules to follow</h2>
+
+          <h3>Never write styles outside a layer</h3>
+          <p>Unlayered styles have higher priority than any <code>@layer</code> rule. A style written at the top level of a stylesheet will beat everything in your layer stack.</p>
+
+          <div class="docs-note docs-note--warn">
+            <p class="docs-note__title">Anti-pattern</p>
+            <p>Writing styles outside a layer block — even accidentally — will override your entire layer architecture. Every rule in this project must live inside a named layer.</p>
+          </div>
+
+          <div class="docs-compare">
+            <div class="docs-compare__panel">
+              <div class="docs-compare__head docs-compare__head--bad">✗ Unlayered — beats everything</div>
+              <div class="docs-compare__body"><span class="t-cmt">/* This is NOT in a layer */</span>
+<span class="t-sel">.card</span> {
+  <span class="t-prop">background</span>: <span class="t-val">red</span>; <span class="t-cmt">/* beats ALL layers */</span>
+}</div>
+            </div>
+            <div class="docs-compare__panel">
+              <div class="docs-compare__head docs-compare__head--good">✓ Layered — respects order</div>
+              <div class="docs-compare__body"><span class="t-at">@layer</span> <span class="t-sel">components</span> {
+  <span class="t-sel">.card</span> {
+    <span class="t-prop">background</span>: <span class="t-val">var(--surface-raised)</span>;
+  }
+}</div>
+            </div>
+          </div>
+
+          <h3>Never use <code>!important</code></h3>
+          <p>If you feel the need for <code>!important</code>, you're in the wrong layer. Move the rule to a higher-priority layer and it will win without it.</p>
+        </div>
+
+        <!-- Layer reference -->
+        <div class="docs-section" id="layer-reference">
+          <h2>Layer reference</h2>
+
+          <div class="docs-token-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Layer</th>
+                  <th>File</th>
+                  <th>Purpose</th>
+                  <th>Add new rules here?</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>reset</code></td>
+                  <td><code>reset.css</code></td>
+                  <td>Browser normalisation</td>
+                  <td>Rarely</td>
+                </tr>
+                <tr>
+                  <td><code>tokens</code></td>
+                  <td><code>tokens.css</code></td>
+                  <td>All CSS custom properties</td>
+                  <td>For new tokens</td>
+                </tr>
+                <tr>
+                  <td><code>base</code></td>
+                  <td><code>base.css</code></td>
+                  <td>Element-level defaults</td>
+                  <td>For new element styles</td>
+                </tr>
+                <tr>
+                  <td><code>components</code></td>
+                  <td><code>components.css</code></td>
+                  <td>Named UI patterns</td>
+                  <td>Yes — for new components</td>
+                </tr>
+                <tr>
+                  <td><code>utilities</code></td>
+                  <td><code>utilities.css</code></td>
+                  <td>Single-purpose helpers</td>
+                  <td>Yes — for new utilities</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="docs-pagination">
+          <a href="index.html" class="docs-pagination__link">
+            <span class="docs-pagination__dir">← Previous</span>
+            <span class="docs-pagination__title">Overview</span>
+          </a>
+          <a href="tokens.html" class="docs-pagination__link docs-pagination__link--next">
+            <span class="docs-pagination__dir">Next →</span>
+            <span class="docs-pagination__title">Design Tokens</span>
+          </a>
+        </div>
+
+      </article>
+
+      <!-- On this page -->
+      <nav class="docs-on-this-page" aria-label="On this page">
+        <p class="docs-on-this-page__title">On this page</p>
+        <a href="#the-problem"       class="docs-on-this-page__link">The problem</a>
+        <a href="#how-layers-work"   class="docs-on-this-page__link">How layers work</a>
+        <a href="#interactive-demo"  class="docs-on-this-page__link">Try it</a>
+        <a href="#the-stack"         class="docs-on-this-page__link">The five-layer stack</a>
+        <a href="#rules"             class="docs-on-this-page__link">Rules to follow</a>
+        <a href="#layer-reference"   class="docs-on-this-page__link">Layer reference</a>
+      </nav>
+
+    </div>
+  </main>
+
+</div>
+
+<script type="module" src="js/docs.js"></script>
+</body>
+</html>

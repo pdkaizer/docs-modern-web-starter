@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Container Queries — Modern Web Starter Docs</title>
+  <meta name="description" content="Container queries: respond to the container, not the viewport. The @container rule, container-type, and a live interactive demo.">
+  <script>(function(){var s=null;try{s=localStorage.getItem('theme-preference');}catch(e){}document.documentElement.setAttribute('data-theme',s||(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));})();</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/docs.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="docs-shell">
+
+  <aside class="docs-sidebar" aria-label="Documentation navigation">
+    <a href="index.html" class="docs-sidebar__logo">
+      <span class="docs-sidebar__logo-name">Mpdern Web Starter</span>
+      <span class="docs-sidebar__logo-tag">Docs</span>
+    </a>
+    <span class="docs-sidebar__section">Getting started</span>
+    <a href="index.html" class="docs-sidebar__link"><span class="docs-sidebar__link-icon">◈</span> Overview</a>
+    <a href="index.html#quick-start" class="docs-sidebar__link"><span class="docs-sidebar__link-icon">→</span> Quick start</a>
+    <a href="index.html#file-structure" class="docs-sidebar__link"><span class="docs-sidebar__link-icon">◻</span> File structure</a>
+    <span class="docs-sidebar__section">Core concepts</span>
+    <a href="layers.html" class="docs-sidebar__link"><span class="docs-sidebar__link-icon">⊞</span> Cascade Layers</a>
+    <a href="tokens.html" class="docs-sidebar__link"><span class="docs-sidebar__link-icon">◎</span> Design Tokens</a>
+    <a href="dark-mode.html" class="docs-sidebar__link"><span class="docs-sidebar__link-icon">◑</span> Dark Mode</a>
+    <a href="container-queries.html" class="docs-sidebar__link"><span class="docs-sidebar__link-icon">⊡</span> Container Queries</a>
+    <span class="docs-sidebar__section">Reference</span>
+    <a href="tokens.html#token-reference" class="docs-sidebar__link"><span class="docs-sidebar__link-icon">≡</span> Token reference</a>
+    <a href="layers.html#layer-reference" class="docs-sidebar__link"><span class="docs-sidebar__link-icon">≡</span> Layer reference</a>
+    <div class="docs-sidebar__spacer"></div>
+    <div class="docs-sidebar__footer">Built with the architecture it documents.</div>
+  </aside>
+
+  <header class="docs-topbar">
+    <div class="docs-topbar__breadcrumb">
+      <span>Starter</span>
+      <span class="docs-topbar__breadcrumb-sep">›</span>
+      <span>Core concepts</span>
+      <span class="docs-topbar__breadcrumb-sep">›</span>
+      <span class="docs-topbar__breadcrumb-current">Container Queries</span>
+    </div>
+    <div class="docs-topbar__actions">
+      <a href="https://github.com/pdkaizer/modern-web-starter" class="btn btn--ghost btn--sm" rel="noopener">GitHub ↗</a>
+      <button class="theme-toggle" aria-label="Switch theme">
+        <svg class="theme-toggle__sun" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="1.5"/><path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.22 4.22l1.42 1.42M14.36 14.36l1.42 1.42M4.22 15.78l1.42-1.42M14.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <svg class="theme-toggle__moon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M17.5 11.5A7.5 7.5 0 0 1 8.5 2.5a7.5 7.5 0 1 0 9 9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="docs-content" id="main">
+    <div class="docs-two-col">
+
+      <article class="docs-article">
+
+        <div class="docs-page-header">
+          <p class="docs-page-label">Core concept 04</p>
+          <h1>Container Queries</h1>
+          <p class="lead">Respond to the container, not the viewport. The same component adapts to wherever it's placed — sidebar, grid, or full-width — with no changes to the markup.</p>
+        </div>
+
+        <div class="docs-section" id="the-problem">
+          <h2>The problem with media queries</h2>
+          <p>Media queries ask "how wide is the viewport?" This works for page-level layout. But for individual components, it's the wrong question. A card component placed in a narrow sidebar needs different styles than the same card in a wide content area — and both can exist simultaneously on the same page.</p>
+
+          <div class="docs-compare">
+            <div class="docs-compare__panel">
+              <div class="docs-compare__head docs-compare__head--bad">✗ Media query — viewport-aware only</div>
+              <div class="docs-compare__body"><span class="t-cmt">/* Asks: "how wide is the screen?" */</span>
+<span class="t-at">@media</span> (<span class="t-prop">min-width</span>: <span class="t-val">640px</span>) {
+  <span class="t-sel">.card</span> {
+    <span class="t-prop">grid-template-columns</span>: <span class="t-val">180px 1fr</span>;
+  }
+}
+
+<span class="t-cmt">/* Card in sidebar? Also gets wide layout */</span>
+<span class="t-cmt">/* even when its container is 200px wide. */</span></div>
+            </div>
+            <div class="docs-compare__panel">
+              <div class="docs-compare__head docs-compare__head--good">✓ Container query — slot-aware</div>
+              <div class="docs-compare__body"><span class="t-cmt">/* Asks: "how wide is my container?" */</span>
+<span class="t-at">@container</span> card-slot (<span class="t-prop">min-width</span>: <span class="t-val">380px</span>) {
+  <span class="t-sel">.card</span> {
+    <span class="t-prop">grid-template-columns</span>: <span class="t-val">180px 1fr</span>;
+  }
+}
+
+<span class="t-cmt">/* Card in sidebar stays stacked.     */</span>
+<span class="t-cmt">/* Card in wide grid gets two columns.*/</span>
+<span class="t-cmt">/* Same markup, same CSS, same time.  */</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="docs-section" id="how-it-works">
+          <h2>How it works</h2>
+          <p>You opt a parent element into being a query container using <code>container-type</code>. Child elements can then use <code>@container</code> to query that container's dimensions and apply styles accordingly.</p>
+
+          <div class="docs-code">
+            <div class="docs-code__label">The two required steps</div>
+            <pre><span class="t-cmt">/* Step 1 — declare the container */</span>
+<span class="t-sel">.card-wrapper</span> {
+  <span class="t-prop">container-type</span>: <span class="t-val">inline-size</span>; <span class="t-cmt">/* query the inline (horizontal) axis */</span>
+  <span class="t-prop">container-name</span>: <span class="t-val">card-slot</span>;   <span class="t-cmt">/* optional name for specificity */</span>
+}
+
+<span class="t-cmt">/* Step 2 — query the container from inside it */</span>
+<span class="t-at">@container</span> card-slot (<span class="t-prop">min-width</span>: <span class="t-val">380px</span>) {
+  <span class="t-sel">.card</span> {
+    <span class="t-prop">grid-template-columns</span>: <span class="t-val">180px 1fr</span>;
+  }
+}</pre>
+          </div>
+
+          <h3>container-type values</h3>
+          <div class="docs-token-table">
+            <table>
+              <thead><tr><th>Value</th><th>Queries available</th><th>Use for</th></tr></thead>
+              <tbody>
+                <tr><td><code>inline-size</code></td><td>Width (inline axis)</td><td>Most responsive components</td></tr>
+                <tr><td><code>size</code></td><td>Width and height</td><td>Components that need both axes</td></tr>
+                <tr><td><code>normal</code></td><td>Style queries only</td><td>Default — not a size container</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="docs-section" id="live-demo">
+          <h2>Try it</h2>
+          <p>The card below is inside a named container. Drag the slider to change the container width. Watch the layout adapt through three states — no viewport resize required.</p>
+
+          <div class="docs-demo">
+            <p class="docs-demo__label">Interactive demo — drag the slider</p>
+
+            <div class="cq-outer">
+              <div class="cq-controls">
+                <label class="cq-slider-label" for="cq-slider">
+                  Container width: <strong id="cq-width-label">600px</strong>
+                  &nbsp;—&nbsp; <span id="cq-state-label" class="docs-cq-state"></span>
+                </label>
+                <input type="range" id="cq-slider" min="200" max="760" value="600" class="cq-slider" aria-label="Resize container">
+              </div>
+
+              <div class="cq-stage" id="cq-stage">
+                <div class="cq-card">
+                  <div class="cq-card__img" aria-hidden="true"></div>
+                  <div class="cq-card__body">
+                    <p class="docs-demo-eyebrow">Container query</p>
+                    <h3 class="cq-card__title">Responding to the container</h3>
+                    <p class="cq-card__text">
+                      Below 380px: stacked, no image.<br>
+                      380–560px: image + text, two columns.<br>
+                      Above 560px: image + text + aside, three columns.
+                    </p>
+                  </div>
+                  <div class="cq-card__aside">
+                    <p class="cq-card__aside-title">Related</p>
+                    <p class="cq-card__aside-body">This column only appears when the container is ≥560px wide — from a single <code>@container</code> rule.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="docs-section" id="real-world">
+          <h2>Real-world usage</h2>
+          <p>The value of container queries is reusability. Write a component once; it adapts wherever it's placed.</p>
+
+          <div class="docs-code">
+            <div class="docs-code__label">A reusable card component</div>
+            <pre><span class="t-cmt">/* The container — anything that holds a card */</span>
+<span class="t-sel">.card-grid</span>,
+<span class="t-sel">.sidebar</span>,
+<span class="t-sel">.featured-slot</span> {
+  <span class="t-prop">container-type</span>: <span class="t-val">inline-size</span>;
+  <span class="t-prop">container-name</span>: <span class="t-val">card-slot</span>;
+}
+
+<span class="t-cmt">/* The card — written once, adapts to all three contexts */</span>
+<span class="t-sel">.card</span> {
+  <span class="t-prop">display</span>: <span class="t-val">grid</span>;
+  <span class="t-prop">grid-template-columns</span>: <span class="t-val">1fr</span>;
+}
+
+<span class="t-at">@container</span> card-slot (<span class="t-prop">min-width</span>: <span class="t-val">380px</span>) {
+  <span class="t-sel">.card</span> { <span class="t-prop">grid-template-columns</span>: <span class="t-val">160px 1fr</span>; }
+  <span class="t-sel">.card__image</span> { <span class="t-prop">display</span>: <span class="t-val">block</span>; }
+}
+
+<span class="t-at">@container</span> card-slot (<span class="t-prop">min-width</span>: <span class="t-val">560px</span>) {
+  <span class="t-sel">.card</span> { <span class="t-prop">grid-template-columns</span>: <span class="t-val">180px 1fr 180px</span>; }
+  <span class="t-sel">.card__aside</span> { <span class="t-prop">display</span>: <span class="t-val">block</span>; }
+}</pre>
+          </div>
+
+          <div class="docs-note docs-note--accent">
+            <p class="docs-note__title">Container queries work with tokens</p>
+            <p>Container queries and design tokens compose naturally. A card's layout responds to its container via <code>@container</code>, while its colours respond to the theme via semantic tokens. They're solving different problems and don't interfere with each other.</p>
+          </div>
+        </div>
+
+        <div class="docs-section" id="in-layers">
+          <h2>Container queries in the layer stack</h2>
+          <p>Container query rules go in <code>@layer components</code>, alongside the base component styles they modify. Keeping them together makes the component's full responsive behaviour readable in one place.</p>
+
+          <div class="docs-code">
+            <div class="docs-code__label">components.css — correct placement</div>
+            <pre><span class="t-at">@layer</span> <span class="t-sel">components</span> {
+
+  <span class="t-cmt">/* Container declaration */</span>
+  <span class="t-sel">.card-wrapper</span> {
+    <span class="t-prop">container-type</span>: <span class="t-val">inline-size</span>;
+    <span class="t-prop">container-name</span>: <span class="t-val">card-slot</span>;
+  }
+
+  <span class="t-cmt">/* Base (smallest) state */</span>
+  <span class="t-sel">.card</span> {
+    <span class="t-prop">background</span>: <span class="t-val">var(--surface-raised)</span>;
+    <span class="t-prop">display</span>: <span class="t-val">grid</span>;
+    <span class="t-prop">grid-template-columns</span>: <span class="t-val">1fr</span>;
+  }
+
+  <span class="t-cmt">/* @container rules go inside the same @layer block */</span>
+  <span class="t-at">@container</span> card-slot (<span class="t-prop">min-width</span>: <span class="t-val">380px</span>) {
+    <span class="t-sel">.card</span> { <span class="t-prop">grid-template-columns</span>: <span class="t-val">160px 1fr</span>; }
+  }
+
+}</pre>
+          </div>
+        </div>
+
+        <div class="docs-section" id="browser-support">
+          <h2>Browser support</h2>
+          <p>Container queries landed in all major browsers by early 2023 and are safe to use without fallbacks for modern browser targets.</p>
+
+          <div class="browser-support">
+            <div class="browser-badge"><span class="browser-badge__dot"></span>Chrome 105+ (Aug 2022)</div>
+            <div class="browser-badge"><span class="browser-badge__dot"></span>Safari 16+ (Sep 2022)</div>
+            <div class="browser-badge"><span class="browser-badge__dot"></span>Firefox 110+ (Feb 2023)</div>
+          </div>
+        </div>
+
+        <div class="docs-pagination">
+          <a href="dark-mode.html" class="docs-pagination__link">
+            <span class="docs-pagination__dir">← Previous</span>
+            <span class="docs-pagination__title">Dark Mode</span>
+          </a>
+          <a href="tokens.html#token-reference" class="docs-pagination__link docs-pagination__link--next">
+            <span class="docs-pagination__dir">Reference →</span>
+            <span class="docs-pagination__title">Token Reference</span>
+          </a>
+        </div>
+
+      </article>
+
+      <nav class="docs-on-this-page" aria-label="On this page">
+        <p class="docs-on-this-page__title">On this page</p>
+        <a href="#the-problem"  class="docs-on-this-page__link">The problem</a>
+        <a href="#how-it-works" class="docs-on-this-page__link">How it works</a>
+        <a href="#live-demo"    class="docs-on-this-page__link">Try it</a>
+        <a href="#real-world"   class="docs-on-this-page__link">Real-world usage</a>
+        <a href="#in-layers"    class="docs-on-this-page__link">In the layer stack</a>
+        <a href="#browser-support" class="docs-on-this-page__link">Browser support</a>
+      </nav>
+
+    </div>
+  </main>
+
+</div>
+
+<script type="module" src="js/docs.js"></script>
+</body>
+</html>

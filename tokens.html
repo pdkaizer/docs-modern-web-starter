@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design Tokens — Modern Web Starter Docs</title>
+  <meta name="description" content="The three-tier token hierarchy: primitives, semantic tokens, and component tokens. Token naming conventions and full reference.">
+  <script>(function(){var s=null;try{s=localStorage.getItem('theme-preference');}catch(e){}document.documentElement.setAttribute('data-theme',s||(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));})();</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/docs.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="docs-shell">
+
+  <aside class="docs-sidebar" aria-label="Documentation navigation">
+    <a href="index.html" class="docs-sidebar__logo">
+      <span class="docs-sidebar__logo-name">Modern Web Starter</span>
+      <span class="docs-sidebar__logo-tag">Docs</span>
+    </a>
+    <span class="docs-sidebar__section">Getting started</span>
+    <a href="index.html" class="docs-sidebar__link"><span class="docs-sidebar__link-icon">◈</span> Overview</a>
+    <a href="index.html#quick-start" class="docs-sidebar__link"><span class="docs-sidebar__link-icon">→</span> Quick start</a>
+    <a href="index.html#file-structure" class="docs-sidebar__link"><span class="docs-sidebar__link-icon">◻</span> File structure</a>
+    <span class="docs-sidebar__section">Core concepts</span>
+    <a href="layers.html" class="docs-sidebar__link"><span class="docs-sidebar__link-icon">⊞</span> Cascade Layers</a>
+    <a href="tokens.html" class="docs-sidebar__link"><span class="docs-sidebar__link-icon">◎</span> Design Tokens</a>
+    <a href="dark-mode.html" class="docs-sidebar__link"><span class="docs-sidebar__link-icon">◑</span> Dark Mode</a>
+    <a href="container-queries.html" class="docs-sidebar__link"><span class="docs-sidebar__link-icon">⊡</span> Container Queries</a>
+    <span class="docs-sidebar__section">Reference</span>
+    <a href="tokens.html#token-reference" class="docs-sidebar__link"><span class="docs-sidebar__link-icon">≡</span> Token reference</a>
+    <a href="layers.html#layer-reference" class="docs-sidebar__link"><span class="docs-sidebar__link-icon">≡</span> Layer reference</a>
+    <div class="docs-sidebar__spacer"></div>
+    <div class="docs-sidebar__footer">Built with the architecture it documents.</div>
+  </aside>
+
+  <header class="docs-topbar">
+    <div class="docs-topbar__breadcrumb">
+      <span>Starter</span>
+      <span class="docs-topbar__breadcrumb-sep">›</span>
+      <span>Core concepts</span>
+      <span class="docs-topbar__breadcrumb-sep">›</span>
+      <span class="docs-topbar__breadcrumb-current">Design Tokens</span>
+    </div>
+    <div class="docs-topbar__actions">
+      <a href="https://github.com/pdkaizer/modern-web-starter" class="btn btn--ghost btn--sm" rel="noopener">GitHub ↗</a>
+      <button class="theme-toggle" aria-label="Switch theme">
+        <svg class="theme-toggle__sun" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="1.5"/><path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.22 4.22l1.42 1.42M14.36 14.36l1.42 1.42M4.22 15.78l1.42-1.42M14.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <svg class="theme-toggle__moon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M17.5 11.5A7.5 7.5 0 0 1 8.5 2.5a7.5 7.5 0 1 0 9 9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="docs-content" id="main">
+    <div class="docs-two-col">
+
+      <article class="docs-article">
+
+        <div class="docs-page-header">
+          <p class="docs-page-label">Core concept 02</p>
+          <h1>Design Tokens</h1>
+          <p class="lead">A three-tier hierarchy that separates <em>what a value is</em> from <em>what it means</em> from <em>where it's used.</em> Change once, update everywhere.</p>
+        </div>
+
+        <div class="docs-section" id="three-tiers">
+          <h2>The three tiers</h2>
+          <p>The core problem tokens solve is the difference between a colour and its purpose. <code>#d97706</code> is an amber colour. <code>--accent-default</code> is "the primary accent colour in this system." Those are different things, and conflating them causes maintenance pain.</p>
+
+          <div class="tier-flow">
+            <div class="tier-box">
+              <div class="tier-box__head">
+                <div class="tier-box__num">T1</div>
+                <div class="tier-box__name">Primitives</div>
+                <div class="tier-box__rule">Never used in components</div>
+              </div>
+              <div class="tier-box__body"><span class="t-prop">--color-amber-500</span>: <span class="t-val">#d97706</span>;
+<span class="t-prop">--color-gray-950</span>:  <span class="t-val">#141414</span>;
+<span class="t-prop">--space-4</span>:         <span class="t-val">1rem</span>;</div>
+            </div>
+            <div class="tier-arrow">→</div>
+            <div class="tier-box">
+              <div class="tier-box__head">
+                <div class="tier-box__num">T2</div>
+                <div class="tier-box__name">Semantic</div>
+                <div class="tier-box__rule">Always use in components</div>
+              </div>
+              <div class="tier-box__body"><span class="t-prop">--accent-default</span>: <span class="t-val">var(--color-amber-500)</span>;
+<span class="t-prop">--text-primary</span>:   <span class="t-val">var(--color-gray-950)</span>;
+<span class="t-prop">--surface-raised</span>: <span class="t-val">var(--color-white)</span>;</div>
+            </div>
+            <div class="tier-arrow">→</div>
+            <div class="tier-box">
+              <div class="tier-box__head">
+                <div class="tier-box__num">T3</div>
+                <div class="tier-box__name">Component</div>
+                <div class="tier-box__rule">Scoped to their element</div>
+              </div>
+              <div class="tier-box__body"><span class="t-sel">.card</span> {
+  <span class="t-prop">--card-padding</span>: <span class="t-val">var(--space-6)</span>;
+  <span class="t-prop">--card-radius</span>:  <span class="t-val">var(--radius-lg)</span>;
+}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="docs-section" id="naming">
+          <h2>Token naming</h2>
+          <p>Tokens should describe <em>purpose</em>, not appearance. When a token's name describes what it looks like rather than what it does, renaming or retheming it becomes impossible without touching every reference.</p>
+
+          <div class="docs-compare">
+            <div class="docs-compare__panel">
+              <div class="docs-compare__head docs-compare__head--bad">✗ Appearance-named — breaks on theme change</div>
+              <div class="docs-compare__body"><span class="t-prop">--blue</span>: <span class="t-val">#3b82f6</span>;
+<span class="t-prop">--white</span>: <span class="t-val">#ffffff</span>;
+<span class="t-prop">--dark-gray</span>: <span class="t-val">#1c1c1c</span>;</div>
+            </div>
+            <div class="docs-compare__panel">
+              <div class="docs-compare__head docs-compare__head--good">✓ Purpose-named — survives any theme</div>
+              <div class="docs-compare__body"><span class="t-prop">--interactive-default</span>: <span class="t-val">var(--color-blue-500)</span>;
+<span class="t-prop">--surface-raised</span>:      <span class="t-val">var(--color-white)</span>;
+<span class="t-prop">--surface-sunken</span>:      <span class="t-val">var(--color-gray-900)</span>;</div>
+            </div>
+          </div>
+
+          <h3>Naming convention</h3>
+          <p>Semantic tokens follow a <code>[category]-[concept]-[variant]-[state]</code> pattern. Categories group related tokens and make the namespace scannable.</p>
+
+          <div class="docs-token-table">
+            <table>
+              <thead><tr><th>Category</th><th>Examples</th><th>Covers</th></tr></thead>
+              <tbody>
+                <tr><td><code>--surface-*</code></td><td><code>--surface-page</code>, <code>--surface-raised</code></td><td>Background colours by elevation</td></tr>
+                <tr><td><code>--text-*</code></td><td><code>--text-primary</code>, <code>--text-tertiary</code></td><td>Text colours by visual weight</td></tr>
+                <tr><td><code>--border-*</code></td><td><code>--border-subtle</code>, <code>--border-default</code></td><td>Border colours by prominence</td></tr>
+                <tr><td><code>--accent-*</code></td><td><code>--accent-default</code>, <code>--accent-subtle</code></td><td>Brand / accent colour roles</td></tr>
+                <tr><td><code>--interactive-*</code></td><td><code>--interactive-default</code>, <code>--interactive-hover</code></td><td>Interactive element colours</td></tr>
+                <tr><td><code>--shadow-*</code></td><td><code>--shadow-sm</code>, <code>--shadow-lg</code></td><td>Elevation shadows</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="docs-section" id="figma-connection">
+          <h2>Figma Variables connection</h2>
+          <p>If your Figma Variable names mirror your CSS custom property names, there is zero translation cost between design and code. A Figma variable named <code>color/surface/raised</code> maps directly to <code>--surface-raised</code> in CSS.</p>
+
+          <div class="docs-note docs-note--accent">
+            <p class="docs-note__title">High-leverage naming parity</p>
+            <p>When Figma Variable collections match CSS <code>@layer tokens</code> — light collection maps to <code>:root</code>, dark collection maps to <code>[data-theme="dark"]</code> — exporting tokens to CSS becomes a mechanical transform with no human interpretation required.</p>
+          </div>
+
+          <div class="docs-code">
+            <div class="docs-code__label">Figma → Style Dictionary → CSS pipeline</div>
+            <pre><span class="t-cmt">/* Figma Variables export (JSON) */</span>
+{
+  <span class="t-str">"color/surface/raised"</span>: { <span class="t-str">"value"</span>: <span class="t-str">"#ffffff"</span> },
+  <span class="t-str">"color/accent/default"</span>: { <span class="t-str">"value"</span>: <span class="t-str">"#d97706"</span> }
+}
+
+<span class="t-cmt">/* Style Dictionary transforms to CSS */</span>
+<span class="t-at">@layer</span> <span class="t-sel">tokens</span> {
+  <span class="t-sel">:root</span> {
+    <span class="t-prop">--surface-raised</span>: <span class="t-val">#ffffff</span>;
+    <span class="t-prop">--accent-default</span>: <span class="t-val">#d97706</span>;
+  }
+}</pre>
+          </div>
+        </div>
+
+        <!-- Live swatches -->
+        <div class="docs-section" id="live-swatches">
+          <h2>Live token values</h2>
+          <p>These swatches show the current resolved value of each semantic token. Toggle the theme to watch them update — the swatch backgrounds are set as <code>background-color: var(--token-name)</code> and the browser resolves them live.</p>
+
+          <div class="docs-demo">
+            <p class="docs-demo__label">Live token swatches — toggle dark mode to see them change</p>
+            <div class="docs-token-table">
+              <table>
+                <thead><tr><th></th><th>Token</th><th>Description</th></tr></thead>
+                <tbody id="token-swatch-grid">
+                  <!-- Populated by JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Full token reference -->
+        <div class="docs-section" id="token-reference">
+          <h2>Token reference</h2>
+          <h3>Space</h3>
+          <p>Based on a 4px grid. Use these instead of arbitrary values.</p>
+          <div class="docs-token-table">
+            <table>
+              <thead><tr><th>Token</th><th>Value</th><th>px</th></tr></thead>
+              <tbody>
+                <tr><td><code>--space-1</code></td><td>0.25rem</td><td>4px</td></tr>
+                <tr><td><code>--space-2</code></td><td>0.5rem</td><td>8px</td></tr>
+                <tr><td><code>--space-3</code></td><td>0.75rem</td><td>12px</td></tr>
+                <tr><td><code>--space-4</code></td><td>1rem</td><td>16px</td></tr>
+                <tr><td><code>--space-5</code></td><td>1.25rem</td><td>20px</td></tr>
+                <tr><td><code>--space-6</code></td><td>1.5rem</td><td>24px</td></tr>
+                <tr><td><code>--space-8</code></td><td>2rem</td><td>32px</td></tr>
+                <tr><td><code>--space-10</code></td><td>2.5rem</td><td>40px</td></tr>
+                <tr><td><code>--space-12</code></td><td>3rem</td><td>48px</td></tr>
+                <tr><td><code>--space-16</code></td><td>4rem</td><td>64px</td></tr>
+                <tr><td><code>--space-20</code></td><td>5rem</td><td>80px</td></tr>
+                <tr><td><code>--space-24</code></td><td>6rem</td><td>96px</td></tr>
+                <tr><td><code>--space-32</code></td><td>8rem</td><td>128px</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Typography scale</h3>
+          <p>Major Third ratio (1.25×). Use <code>clamp()</code> for responsive headings.</p>
+          <div class="docs-token-table">
+            <table>
+              <thead><tr><th>Token</th><th>Value</th><th>~px</th></tr></thead>
+              <tbody>
+                <tr><td><code>--size-3xs</code></td><td>0.512rem</td><td>~8px</td></tr>
+                <tr><td><code>--size-2xs</code></td><td>0.64rem</td><td>~10px</td></tr>
+                <tr><td><code>--size-xs</code></td><td>0.8rem</td><td>~13px</td></tr>
+                <tr><td><code>--size-sm</code></td><td>1rem</td><td>16px — body</td></tr>
+                <tr><td><code>--size-md</code></td><td>1.25rem</td><td>20px</td></tr>
+                <tr><td><code>--size-lg</code></td><td>1.563rem</td><td>25px</td></tr>
+                <tr><td><code>--size-xl</code></td><td>1.953rem</td><td>31px</td></tr>
+                <tr><td><code>--size-2xl</code></td><td>2.441rem</td><td>39px</td></tr>
+                <tr><td><code>--size-3xl</code></td><td>3.052rem</td><td>49px</td></tr>
+                <tr><td><code>--size-4xl</code></td><td>3.815rem</td><td>61px</td></tr>
+                <tr><td><code>--size-5xl</code></td><td>4.768rem</td><td>76px</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Font families</h3>
+          <div class="docs-token-table">
+            <table>
+              <thead><tr><th>Token</th><th>Value</th><th>Use for</th></tr></thead>
+              <tbody>
+                <tr><td><code>--font-serif</code></td><td>Instrument Serif, Georgia</td><td>Headings, display text, blockquotes</td></tr>
+                <tr><td><code>--font-sans</code></td><td>Outfit, system-ui</td><td>Body text, UI labels, metadata</td></tr>
+                <tr><td><code>--font-mono</code></td><td>JetBrains Mono, Fira Code</td><td>Code, technical content, labels</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="docs-pagination">
+          <a href="layers.html" class="docs-pagination__link">
+            <span class="docs-pagination__dir">← Previous</span>
+            <span class="docs-pagination__title">Cascade Layers</span>
+          </a>
+          <a href="dark-mode.html" class="docs-pagination__link docs-pagination__link--next">
+            <span class="docs-pagination__dir">Next →</span>
+            <span class="docs-pagination__title">Dark Mode</span>
+          </a>
+        </div>
+
+      </article>
+
+      <nav class="docs-on-this-page" aria-label="On this page">
+        <p class="docs-on-this-page__title">On this page</p>
+        <a href="#three-tiers"         class="docs-on-this-page__link">The three tiers</a>
+        <a href="#naming"              class="docs-on-this-page__link">Token naming</a>
+        <a href="#figma-connection"    class="docs-on-this-page__link">Figma connection</a>
+        <a href="#live-swatches"       class="docs-on-this-page__link">Live token values</a>
+        <a href="#token-reference"     class="docs-on-this-page__link">Token reference</a>
+      </nav>
+
+    </div>
+  </main>
+
+</div>
+
+<script type="module" src="js/docs.js"></script>
+</body>
+</html>
